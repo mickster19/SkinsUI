@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MICKSTER VAULT | Download Bus Skins Free</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --main-dark: #1a1a1a; --accent: #e67e22; --wa-green: #25D366; }
+        body { font-family: 'Poppins', sans-serif; background-color: #121212; color: #ffffff; }
+        
+        .navbar { background: var(--main-dark); border-bottom: 2px solid var(--accent); }
+        .navbar-brand { font-weight: 700; color: var(--accent) !important; letter-spacing: 1px; }
+
+        .hero { padding: 60px 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80'); background-size: cover; background-position: center; border-radius: 0 0 50px 50px; }
+
+        .skin-card { background: #222; border: none; border-radius: 15px; overflow: hidden; transition: 0.3s; margin-bottom: 25px; }
+        .skin-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(230, 126, 34, 0.2); }
+        .skin-img { height: 200px; object-fit: cover; width: 100%; border-bottom: 3px solid var(--accent); }
+        .skin-info { padding: 15px; }
+        .btn-download { background: var(--accent); color: white; border: none; border-radius: 8px; width: 100%; font-weight: 600; padding: 10px; text-decoration: none; display: block; text-align: center; }
+        
+        .filter-btn { background: #333; color: white; border: none; padding: 8px 20px; border-radius: 20px; margin: 5px; font-size: 0.9rem; transition: 0.3s; }
+        .filter-btn.active { background: var(--accent); }
+
+        /* WhatsApp Floating Button */
+        .wa-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: var(--wa-green);
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .wa-float:hover { transform: scale(1.1); color: white; background-color: #128C7E; }
+
+        #skins-container { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <a href="https://whatsapp.com/channel/0029Vb6MUtB6hENv28MTkw35" class="wa-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">MICKSTER VAULT</a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="https://whatsapp.com/channel/0029Vb6MUtB6hENv28MTkw35" target="_blank" class="btn btn-outline-success btn-sm fw-bold">
+                    <i class="fab fa-whatsapp me-1"></i> FOLLOW CHANNEL
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">BURE BUS SKINS & MODS</h1>
+            <p class="lead">Gusa kategoria hapa chini kuona skins husika.</p>
+            <div class="mt-4 d-flex justify-content-center flex-wrap gap-2" id="filter-group">
+                <button class="filter-btn active" onclick="filterSkins('all', this)">Zote</button>
+                <button class="filter-btn" onclick="filterSkins('Yutong F12', this)">Yutong F12</button>
+                <button class="filter-btn" onclick="filterSkins('Zhongtong Mega', this)">Zhongtong Mega</button>
+                <button class="filter-btn" onclick="filterSkins('Higer', this)">Higer</button>
+                <button class="filter-btn" onclick="filterSkins('Yutong D14', this)">Yutong D14</button>
+                <button class="filter-btn" onclick="filterSkins('Marcopolo G7', this)">Marcopolo G7</button>
+                <button class="filter-btn" onclick="filterSkins('Kibamia', this)">Kibamia</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mt-5">
+        <div class="row" id="skins-container">
+            </div>
+    </div>
+
+    <footer class="py-5 mt-5 border-top border-secondary text-center text-muted">
+        <div class="container">
+            <p>&copy; 2026 MICKSTER VAULT. All Rights Reserved.</p>
+            <p class="small">Follow us on WhatsApp for latest updates!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data ya skins
+        const skinsData = [
+            { name: "Military Bus Tz", cat: "Yutong F12", img: "https://via.placeholder.com/400x250/222/e67e22?text=Military+Yutong" },
+            { name: "Abood Luxury", cat: "Marcopolo G7", img: "https://via.placeholder.com/400x250/222/e67e22?text=Abood+G7" },
+            { name: "Kibamia Classic", cat: "Kibamia", img: "https://via.placeholder.com/400x250/222/e67e22?text=Kibamia+Blue" }
+        ];
+
+        function filterSkins(category, element) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            const container = document.getElementById('skins-container');
+            container.innerHTML = '';
+            const filtered = category === 'all' ? skinsData : skinsData.filter(s => s.cat === category);
+
+            filtered.forEach(skin => {
+                container.innerHTML += `
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="skin-card">
+                            <img src="${skin.img}" class="skin-img">
+                            <div class="skin-info">
+                                <span class="badge bg-secondary mb-2">${skin.cat}</span>
+                                <h5 class="fw-bold">${skin.name}</h5>
+                                <a href="#" class="btn-download"><i class="fa fa-download me-2"></i> DOWNLOAD</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.onload = () => filterSkins('all', document.querySelector('.filter-btn'));
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
