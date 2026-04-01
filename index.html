@@ -16,35 +16,20 @@
 
         .hero { padding: 60px 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80'); background-size: cover; background-position: center; border-radius: 0 0 50px 50px; }
 
-        .skin-card { background: #222; border: none; border-radius: 15px; overflow: hidden; transition: 0.3s; margin-bottom: 25px; }
+        .skin-card { background: #222; border: none; border-radius: 15px; overflow: hidden; transition: 0.3s; margin-bottom: 25px; height: 100%; }
         .skin-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(230, 126, 34, 0.2); }
-        .skin-img { height: 200px; object-fit: cover; width: 100%; border-bottom: 3px solid var(--accent); }
+        
+        /* Hapa ndipo picha ya Catbox itaonekana */
+        .skin-img { height: 200px; object-fit: cover; width: 100%; border-bottom: 3px solid var(--accent); background: #333; }
+        
         .skin-info { padding: 15px; }
-        .btn-download { background: var(--accent); color: white; border: none; border-radius: 8px; width: 100%; font-weight: 600; padding: 10px; text-decoration: none; display: block; text-align: center; }
+        .btn-download { background: var(--accent); color: white; border: none; border-radius: 8px; width: 100%; font-weight: 600; padding: 10px; text-decoration: none; display: block; text-align: center; transition: 0.3s; }
+        .btn-download:hover { background: #d35400; color: white; }
         
         .filter-btn { background: #333; color: white; border: none; padding: 8px 20px; border-radius: 20px; margin: 5px; font-size: 0.9rem; transition: 0.3s; }
         .filter-btn.active { background: var(--accent); }
 
-        /* WhatsApp Floating Button */
-        .wa-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            right: 40px;
-            background-color: var(--wa-green);
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+        .wa-float { position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px; background-color: var(--wa-green); color: #FFF; border-radius: 50px; text-align: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; }
         .wa-float:hover { transform: scale(1.1); color: white; background-color: #128C7E; }
 
         #skins-container { animation: fadeIn 0.5s ease; }
@@ -71,7 +56,7 @@
     <section class="hero text-center">
         <div class="container">
             <h1 class="display-4 fw-bold">BURE BUS SKINS & MODS</h1>
-            <p class="lead">Gusa kategoria hapa chini kuona skins husika.</p>
+            <p class="lead">Chagua kategoria kuona skins.</p>
             <div class="mt-4 d-flex justify-content-center flex-wrap gap-2" id="filter-group">
                 <button class="filter-btn active" onclick="filterSkins('all', this)">Zote</button>
                 <button class="filter-btn" onclick="filterSkins('Yutong F12', this)">Yutong F12</button>
@@ -92,34 +77,56 @@
     <footer class="py-5 mt-5 border-top border-secondary text-center text-muted">
         <div class="container">
             <p>&copy; 2026 MICKSTER VAULT. All Rights Reserved.</p>
-            <p class="small">Follow us on WhatsApp for latest updates!</p>
+            <p class="small">Powered by Mickster Developer</p>
         </div>
     </footer>
 
     <script>
-        // Data ya skins
+        /** * DATA KUTOKA CATBOX
+         * Hapa ndipo unaweka link zako za Catbox. 
+         * 'img' inafanya kazi mbili: Display na Download.
+         */
         const skinsData = [
-            { name: "Military Bus Tz", cat: "Yutong F12", img: "https://via.placeholder.com/400x250/222/e67e22?text=Military+Yutong" },
-            { name: "Abood Luxury", cat: "Marcopolo G7", img: "https://via.placeholder.com/400x250/222/e67e22?text=Abood+G7" },
-            { name: "Kibamia Classic", cat: "Kibamia", img: "https://via.placeholder.com/400x250/222/e67e22?text=Kibamia+Blue" }
+            { 
+                name: "Military Bus Tz", 
+                cat: "Yutong F12", 
+                img: "https://files.catbox.moe/u6v7u3.png" // Mfano wa link ya Catbox
+            },
+            { 
+                name: "Abood Luxury", 
+                cat: "Marcopolo G7", 
+                img: "https://files.catbox.moe/example2.jpg" 
+            },
+            { 
+                name: "Kibamia Classic", 
+                cat: "Kibamia", 
+                img: "https://files.catbox.moe/example3.png" 
+            }
         ];
 
         function filterSkins(category, element) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+            if(element) {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                element.classList.add('active');
+            }
+            
             const container = document.getElementById('skins-container');
             container.innerHTML = '';
             const filtered = category === 'all' ? skinsData : skinsData.filter(s => s.cat === category);
 
             filtered.forEach(skin => {
+                // Tunatumia ${skin.img} mara mbili: kwenye <img> na kwenye <a> tag
                 container.innerHTML += `
                     <div class="col-md-4 col-sm-6 mb-4">
                         <div class="skin-card">
-                            <img src="${skin.img}" class="skin-img">
+                            <img src="${skin.img}" class="skin-img" alt="${skin.name}" loading="lazy">
                             <div class="skin-info">
                                 <span class="badge bg-secondary mb-2">${skin.cat}</span>
                                 <h5 class="fw-bold">${skin.name}</h5>
-                                <a href="#" class="btn-download"><i class="fa fa-download me-2"></i> DOWNLOAD</a>
+                                
+                                <a href="${skin.img}" download="${skin.name.replace(/\s+/g, '_')}.png" class="btn-download">
+                                    <i class="fa fa-download me-2"></i> DOWNLOAD SKIN
+                                </a>
                             </div>
                         </div>
                     </div>
