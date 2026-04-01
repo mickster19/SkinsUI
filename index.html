@@ -19,7 +19,6 @@
         .skin-card { background: #222; border: none; border-radius: 15px; overflow: hidden; transition: 0.3s; margin-bottom: 25px; height: 100%; }
         .skin-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(230, 126, 34, 0.2); }
         
-        /* Hapa ndipo picha ya Catbox itaonekana */
         .skin-img { height: 200px; object-fit: cover; width: 100%; border-bottom: 3px solid var(--accent); background: #333; }
         
         .skin-info { padding: 15px; }
@@ -81,41 +80,41 @@
         </div>
     </footer>
 
-    <script>
-        /** * DATA KUTOKA CATBOX
-         * Hapa ndipo unaweka link zako za Catbox. 
-         * 'img' inafanya kazi mbili: Display na Download.
-         */
-        const skinsData = [
-            { 
-                name: "Military Bus Tz", 
-                cat: "Yutong F12", 
-                img: "https://files.catbox.moe/u6v7u3.png" // Mfano wa link ya Catbox
-            },
-            { 
-                name: "Abood Luxury", 
-                cat: "Marcopolo G7", 
-                img: "https://files.catbox.moe/example2.jpg" 
-            },
-            { 
-                name: "Kibamia Classic", 
-                cat: "Kibamia", 
-                img: "https://files.catbox.moe/example3.png" 
-            }
-        ];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        function filterSkins(category, element) {
-            if(element) {
-                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                element.classList.add('active');
-            }
-            
-            const container = document.getElementById('skins-container');
+        // Config yako imekamilika hapa
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiNjWTVcqZYsiHDWyxvU35qoAakwhFZKk",
+            authDomain: "mickster-vault.firebaseapp.com",
+            projectId: "mickster-vault",
+            storageBucket: "mickster-vault.appspot.com",
+            messagingSenderId: "109876543210",
+            appId: "1:109876543210:web:abcdef123456"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const container = document.getElementById('skins-container');
+        
+        let dbSkins = []; // Hapa ndipo skins zote zitahifadhiwa baada ya kutoka Firebase
+
+        // Sikiliza Database (Real-time)
+        const q = query(collection(db, "skins"), orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            dbSkins = snapshot.docs.map(doc => ({
+                name: doc.data().title,
+                cat: doc.data().category,
+                img: doc.data().imageUrl
+            }));
+            renderSkins(dbSkins);
+        });
+
+        // Function ya kuonyesha Skins
+        function renderSkins(data) {
             container.innerHTML = '';
-            const filtered = category === 'all' ? skinsData : skinsData.filter(s => s.cat === category);
-
-            filtered.forEach(skin => {
-                // Tunatumia ${skin.img} mara mbili: kwenye <img> na kwenye <a> tag
+            data.forEach(skin => {
                 container.innerHTML += `
                     <div class="col-md-4 col-sm-6 mb-4">
                         <div class="skin-card">
@@ -123,8 +122,7 @@
                             <div class="skin-info">
                                 <span class="badge bg-secondary mb-2">${skin.cat}</span>
                                 <h5 class="fw-bold">${skin.name}</h5>
-                                
-                                <a href="${skin.img}" download="${skin.name.replace(/\s+/g, '_')}.png" class="btn-download">
+                                <a href="${skin.img}" download="${skin.name}.png" class="btn-download">
                                     <i class="fa fa-download me-2"></i> DOWNLOAD SKIN
                                 </a>
                             </div>
@@ -134,7 +132,14 @@
             });
         }
 
-        window.onload = () => filterSkins('all', document.querySelector('.filter-btn'));
+        // Filter Logic (Inasalia vilevile)
+        window.filterSkins = function(category, element) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            const filtered = category === 'all' ? dbSkins : dbSkins.filter(s => s.cat === category);
+            renderSkins(filtered);
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
